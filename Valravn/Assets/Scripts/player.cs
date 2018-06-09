@@ -34,11 +34,11 @@ public class player : MonoBehaviour {
         playership.AddRelativeForce(Vector2.up * Power(engineStage));
         if (Input.GetKey(KeyCode.A))
         {
-            playership.AddTorque(speed / 2);
+            playership.AddTorque(steerTorque);
         }
         if (Input.GetKey(KeyCode.D))
         {
-            playership.AddTorque(-speed / 2);
+            playership.AddTorque(-steerTorque);
         }
     }
 
