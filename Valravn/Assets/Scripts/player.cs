@@ -4,23 +4,59 @@ using UnityEngine;
 
 public class player : MonoBehaviour {
     Rigidbody2D playership;
-    public float horsepower;
-    Vector2 steeringpower;
-	// Use this for initialization
-	void Start () {
+    public float maxhorsepower;
+    int engineStage = 0;
+    float currenthorsepower;
+
+    // Use this for initialization
+    void Start () {
         playership = gameObject.GetComponent<Rigidbody2D>();
-        steeringpower = new Vector2(0.0F, 1.0F);
-	}
+    }
 	
 	// Update is called once per frame
-	void Update () {
-        if (Input.GetKey(KeyCode.W))
-            playership.AddRelativeForce(steeringpower * horsepower);
-        if (Input.GetKey(KeyCode.S))
-            playership.AddRelativeForce(Vector2.down * horsepower);
+	void FixedUpdate () {
+        float speed = playership.velocity.magnitude;
+        float steerTorque = speed / 2;
+        if (steerTorque > 0.75)
+            steerTorque = 0.75F;
+        if (Input.GetKeyDown(KeyCode.W))
+            engineStage++;
+        else if (Input.GetKeyDown(KeyCode.S))
+            engineStage--;
+        if (engineStage >= 4)
+        {
+            engineStage = 4;
+        }
+        if (engineStage <= -1)
+        {
+            engineStage = -1;
+        }
+        playership.AddRelativeForce(Vector2.up * Power(engineStage));
         if (Input.GetKey(KeyCode.A))
-            playership.AddTorque(1);
+        {
+            playership.AddTorque(speed / 2);
+        }
         if (Input.GetKey(KeyCode.D))
-            playership.AddTorque(-1);
+        {
+            playership.AddTorque(-speed / 2);
+        }
     }
+
+    float Power(int ES)
+    {
+        if (ES == -1)
+            currenthorsepower = maxhorsepower * -0.25F;
+        if (ES == 0)
+            currenthorsepower = maxhorsepower * 0;
+        if (ES == 1)
+            currenthorsepower = maxhorsepower * 0.25F;
+        if (ES == 2)
+            currenthorsepower = maxhorsepower * 0.5F;
+        if (ES == 3)
+            currenthorsepower = maxhorsepower * 0.75F;
+        if (ES == 4)
+            currenthorsepower = maxhorsepower;
+        return currenthorsepower;
+    }
+
 }
