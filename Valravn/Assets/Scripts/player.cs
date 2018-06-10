@@ -16,7 +16,7 @@ public class player : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
         float speed = playership.velocity.magnitude;
-        float steerTorque = speed / 2;
+        float steerTorque = speed / 1.5F;
         if (steerTorque > 0.75)
             steerTorque = 0.75F;
         if (Input.GetKeyDown(KeyCode.W))
